@@ -1,0 +1,83 @@
+﻿@page
+@model DetailsModel
+
+@{
+    ViewData["Title"] = Model.BlogPost.Blog.Title;
+}
+
+<div class="w3-container w3-padding" style="margin-bottom:1.5em">
+    <h1>@Model.BlogPost.Blog.Title</h1>
+    <h5>@Model.BlogPost.Blog.PublishDate.ToLongDateString()</h5>
+    <p style="font-weight:bold">
+        <img src="@Model.BlogPost.BlogImage.ImagePath" alt="@Model.BlogPost.BlogImage.AltText" class="w3-border w3-padding w3-image w3-hover-grayscale" style="max-width:400px;float:left" />
+        @Html.Raw(Model.BlogPost.Blog.Perex)
+    </p>
+    <p>
+        @Html.Raw(Model.BlogPost.Blog.MainText)
+    </p>
+    <div class="w3-tooltip w3-margin-bottom">
+        @{
+            var shareUrl = Uri.EscapeDataString(Model.BlogPost.Blog.PermaLink);
+        }
+
+        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+        <div style="position:absolute;left:0;bottom:18px"
+              class="w3-text w3-tag">
+            <p id="permalink" style="display:none;">@Model.BlogPost.Blog.PermaLink</p>
+            <span onclick="copyToClipboard()" style="cursor:pointer"><i class="fa-solid fa-link"></i> získat odkaz</span><br />
+            <a href="https://www.facebook.com/sharer/sharer.php?u=@shareUrl" target="_blank" style="text-decoration:none"><i class="fa-brands fa-facebook"></i> Facebook</a><br />
+            <a href="https://twitter.com/intent/tweet?text=@Model.BlogPost.Blog.Title&url=@Model.BlogPost.Blog.PermaLink" target="_blank" style="text-decoration:none"><i class="fa-brands fa-x-twitter"></i> X</a><br />
+            <a href="https://www.pinterest.com/pin/create/button/?url=@Model.BlogPost.Blog.PermaLink&media=@Model.BlogPost.BlogImage.ImagePath&description=@Model.BlogPost.Blog.Title" target="_blank" style="text-decoration:none"><i class="fa-brands fa-pinterest"></i> Pinterest</a><br />
+        </div>
+    </div>
+    <div>
+        @{
+            foreach (var tag in Model.BlogPost.Blog.LabelArray)
+            {
+                <span class="w3-tag w3-pale-green w3-round-xxlarge w3-padding-small w3-hover-shadow" style="margin:0.3em"><a asp-page="Index" asp-route-SearchString="@tag" style="text-decoration:none">@tag</a></span>
+            }
+        }
+    </div>
+</div>
+
+<div class="w3-container w3-padding">
+    Až bude hotový, zapojit komentáře
+</div>
+
+<div class="w3-container w3-padding">
+    <h2>Nejčtenější příspěvky</h2>
+    @foreach (var post in Model.MostReadBlogPosts)
+    {
+        <div class="w3-card-4 w3-margin w3-white">
+            <div class="w3-container">
+                <h3><a asp-page="./Details" asp-route-id="@post.Id">@post.Title</a></h3>
+                <h5>@post.PublishDate.ToShortDateString()</h5>
+                <p>@Html.Raw(post.Perex)</p>
+            </div>
+        </div>
+    }
+</div>
+
+@section Head{
+    <script src="https://kit.fontawesome.com/3aeded1a52.js" crossorigin="anonymous"></script>
+}
+
+@section Scripts{
+    <script>
+        function copyToClipboard() {
+            // Get the permalink text
+            var permalink = document.getElementById('permalink').innerText;
+
+            // Create a temporary text area to hold the link
+            var tempTextArea = document.createElement('textarea');
+            tempTextArea.value = permalink;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select(); // Select the text
+            document.execCommand('copy'); // Copy the text
+            document.body.removeChild(tempTextArea); // Remove the temporary text area
+
+            // Show a message to the user
+            alert('Odkaz byl zkopírován do schránky.'); // Change the message as needed
+        }
+    </script>
+}

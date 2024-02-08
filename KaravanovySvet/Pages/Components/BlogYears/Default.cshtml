@@ -1,0 +1,11 @@
+﻿@model List<int>;
+
+<div class="w3-dropdown-hover w3-mobile">
+    <a asp-area="" asp-page="/Blog/Index" class="w3-button w3-hover-pale-green">Blog</a>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        @foreach (var year in Model)
+        {
+            <a asp-area="" asp-page="/Blog/Index" asp-route-SelectedYear="@year" class="w3-bar-item w3-button w3-hover-pale-green w3-mobile">@year</a>
+        }
+    </div>
+</div>
