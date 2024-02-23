@@ -1,0 +1,63 @@
+﻿body {
+    background-color: #f1eeed;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    font-family: "Rubik Maps", sans-serif;
+}
+
+h4 a:hover {
+    color: #e9535a;
+}
+
+.headerNav {
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .headerNav:after {
+        width: 0;
+        display: block;
+        background: #000;
+        height: 3px;
+        transition: all .5s ease-in-out;
+        content: "";
+    }
+
+    .headerNav:hover {
+        color: #000;
+    }
+
+        .headerNav:hover:after {
+            width: 100%;
+        }
+
+.dropDownNav:hover {
+    background-color: #f8f8f8;
+    color: #e9535a;
+}
+
+.demo {
+    cursor: pointer;
+    height: 13px;
+    width: 13px;
+    margin: 0 2px;
+    background-color: #bbb;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.blogSlides {
+    position: absolute;
+    width: 100%;
+    display: none; /* Hide slides by default */
+}
+
+.w3-display-container {
+    position: relative;
+    overflow: hidden; /* Prevents content from overflowing */
+}

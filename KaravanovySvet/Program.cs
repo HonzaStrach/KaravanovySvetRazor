@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using KaravanovySvet.Data;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Identity;
+using Azure.Identity;
 namespace KaravanovySvet
 {
     public class Program
@@ -12,10 +14,16 @@ namespace KaravanovySvet
             builder.Services.AddDbContext<KaravanovySvetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("KaravanovySvetContext") ?? throw new InvalidOperationException("Connection string 'KaravanovySvetContext' not found.")));
 
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<KaravanovySvetContext>();
+
             // Configure BlobServiceClient
-            builder.Services.AddSingleton(s => new BlobServiceClient(builder.Configuration.GetConnectionString("BlobStorageConnection")));
+            builder.Services.AddSingleton<BlobServiceClient>(x =>
+                new BlobServiceClient(
+                new Uri("https://jenikuvweb.blob.core.windows.net"),
+                new DefaultAzureCredential()));
 
             // Add services to the container.
+            builder.Services.AddMvc();
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
@@ -34,6 +42,10 @@ namespace KaravanovySvet
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "Admin",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}");
 
             app.MapRazorPages();
 

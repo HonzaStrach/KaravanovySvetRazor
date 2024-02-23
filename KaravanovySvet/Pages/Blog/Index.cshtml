@@ -5,27 +5,65 @@
     ViewData["Title"] = "Přehled příspěvků blogu";
 }
 
-<div class="w3-container" style="background-image: url('img/background.png'); background-size: cover; background-repeat: no-repeat; background-position: center">
+<div class="w3-row-padding">
+    <div class="w3-col m8">
     @{
-        var i = 1;
-        var imgStyle = "";
         foreach (var item in Model.BlogPosts)
         {
-            if (i % 2 != 0)
-            {
-                imgStyle = "left;margin-right:0.5em";
-            }
-            else
-            {
-                imgStyle = "right";
-            }
-            <div class="w3-card w3-padding w3-margin-bottom w3-hover-pale-green">
-                <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" class="w3-border w3-padding w3-image w3-hover-grayscale" style="max-width:400px;float:@imgStyle" />
-                <h2><a asp-page="./Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
-                <h4>Datum zveřejnění: @item.Blog.PublishDate.ToLongDateString()</h4>
-                <p>@item.Blog.Perex</p>
+            <div class="w3-card-2 w3-margin-bottom">
+                <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%" />
+                <span class="w3-pink w3-padding">@item.Blog.PublishDate.ToLongDateString()</span>
+                <div class="w3-padding">
+                    <h2 class="w3-hover-text-pink"><a asp-area="" asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                    <p>@Html.Raw(item.Blog.Perex)</p>
+                    <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
+                </div>
             </div>
-            i++;
         }
     }
+        @if (Model.TotalPages > 1)
+        {
+            <div class="w3-bar w3-margin-bottom">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a asp-page="./Index" asp-route-currentPage="@(Model.CurrentPage - 1)" class="w3-bar-item w3-button w3-white w3-hover-pink w3-margin-right"><i class="fa-solid fa-chevron-left"></i></a>
+                }
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <a asp-page="./Index" asp-route-currentPage="@i" class="w3-bar-item w3-button w3-margin-right @(i == Model.CurrentPage ? "w3-dark-gray" : "w3-white") w3-hover-dark-gray">@i</a>
+                }
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a asp-page="./Index" asp-route-currentPage="@(Model.CurrentPage + 1)" class="w3-bar-item w3-button w3-white w3-hover-pink"><i class="fa-solid fa-chevron-right"></i></a>
+                }
+            </div>
+        }
+    </div>
+    <div class="w3-col m4">
+        <div class="w3-card-2 w3-margin-bottom w3-padding">
+            <h3>Karavanový svět</h3>
+            <p>Vítejte v Karavanovém světě - průvodci cestováním karavanem! Objevujte s námi neomezenou svobodu na cestách, získejte odborné rady pro řízení karavanů a inspirujte se tipy na úžasné výlety. Zajistěte si hladký a nezapomenutelný zážitek na každé cestě. Připojte se ke komunitě vášnivých karavanistů a objevte svět s pohodlím na čtyřech kolech!</p>
+        </div>
+
+        <div class="w3-card-2 w3-margin-bottom w3-padding">
+            <h3>Nejčtenější příspěvky</h3>
+            <div>
+                @foreach (var post in Model.MostReadPosts)
+                {
+                    <h4><a asp-page="/Blog/Index" asp-route-id="@post.Blog.Id">@post.Blog.Title</a></h4>
+                    <span class="w3-small">@post.Blog.PublishDate.ToLongDateString()</span>
+                }
+            </div>
+        </div>
+
+        <div class="w3-card-2 w3-margin-bottom w3-padding">
+            <h3>Štítky</h3>
+            <div class="w3-center">
+                @foreach (var tag in Model.TagCloud)
+                {
+                    <a asp-page="/Blog/Index" asp-route-SearchString="@tag" class="w3-button w3-small w3-yellow w3-hover-pink" style="margin:0.5em">@tag</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>

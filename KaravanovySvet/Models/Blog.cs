@@ -10,6 +10,8 @@ namespace KaravanovySvet.Models
         [Required]
         public required string Title { get; set; }
         [Required]
+        public required string Teaser { get; set; }
+        [Required]
         public required string Perex { get; set; }
         [Required]
         public required string MainText { get; set; }

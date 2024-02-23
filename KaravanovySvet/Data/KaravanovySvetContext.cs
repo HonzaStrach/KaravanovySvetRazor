@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using KaravanovySvet.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace KaravanovySvet.Data
 {
-    public class KaravanovySvetContext : DbContext
+    public class KaravanovySvetContext : IdentityDbContext
     {
         public KaravanovySvetContext (DbContextOptions<KaravanovySvetContext> options)
             : base(options)

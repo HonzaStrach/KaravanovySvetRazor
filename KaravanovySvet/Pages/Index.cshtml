@@ -4,32 +4,73 @@
     ViewData["Title"] = "Úvodní stránka";
 }
 
-<div class="w3-container w3-center" style="background-image: url('img/background.png'); background-size: cover; background-repeat: no-repeat; background-position: center">
-    <h1>Karavanový svět</h1>
-    <p>Vítejte v Karavanovém světě - průvodci cestováním karavanem! Objevujte s námi neomezenou svobodu na cestách, získejte odborné rady pro řízení karavanů a inspirujte se tipy na úžasné výlety. Zajistěte si hladký a nezapomenutelný zážitek na každé cestě. Připojte se ke komunitě vášnivých karavanistů a objevte svět s pohodlím na čtyřech kolech!</p>
+<div class="w3-hide-small w3-margin-bottom">
+@{
+    foreach (var item in Model.MostReadPosts)
+    {
+        <div class="w3-display-container blogSlides">
+            <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%">
+            <div class="w3-padding w3-display-bottomleft" style="margin-bottom:3em">
+                <h2 style="color:white;font-size:3.5em;font-weight:bold"><a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                <h3 style="color:white;font-weight:bold">@item.Blog.Teaser</h3>
+                <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Zobrazit příspěvek</a>
+            </div>
+        </div>
+    }
+}
 </div>
 
-<div class="w3-container">
-    @{
-        var i = 1;
-        var imgStyle = "";
-        foreach (var item in Model.LatestBlogPosts)
-        {
-            if (i % 2 != 0)
+<div class="w3-row-padding">
+    <div class="w3-col m8">
+        @{
+            foreach (var item in Model.LatestBlogPosts)
             {
-                imgStyle = "left;margin-right:0.5em";
+                <div class="w3-card-2 w3-margin-bottom">
+                    <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%" />
+                    <span class="w3-pink w3-padding">@item.Blog.PublishDate.ToLongDateString()</span>
+                    <div class="w3-padding">
+                        <h2 class="w3-hover-text-pink"><a asp-area="" asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                        <p>@Html.Raw(item.Blog.Perex)</p>
+                        <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
+                    </div>
+                </div>
             }
-            else
-            {
-                imgStyle = "right";
-            }
-            <div class="w3-card w3-padding w3-margin-bottom w3-hover-pale-green">
-                <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" class="w3-border w3-padding w3-image w3-hover-grayscale" style="max-width:400px;float:@imgStyle" />
-                <h2><a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
-                <h4>Datum zveřejnění: @item.Blog.PublishDate.ToLongDateString()</h4>
-                <p>@item.Blog.Perex</p>
-            </div>
-            i++;
         }
-    }
+    </div>
+
+    <div class="w3-col m4">
+        <div class="w3-card-2 w3-margin-bottom w3-padding">
+            <h3>Karavanový svět</h3>
+            <p>Vítejte v Karavanovém světě - průvodci cestováním karavanem! Objevujte s námi neomezenou svobodu na cestách, získejte odborné rady pro řízení karavanů a inspirujte se tipy na úžasné výlety. Zajistěte si hladký a nezapomenutelný zážitek na každé cestě. Připojte se ke komunitě vášnivých karavanistů a objevte svět s pohodlím na čtyřech kolech!</p>
+        </div>
+
+        <div class="w3-card-2 w3-margin-bottom w3-padding">
+            <h3>Štítky</h3>
+            <div class="w3-center">
+                @foreach (var tag in Model.TagCloud)
+                {
+                    <a asp-page="/Blog/Index" asp-route-SearchString="@tag" class="w3-button w3-small w3-yellow w3-hover-pink" style="margin:0.5em">@tag</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        var slideIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("blogSlides");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > x.length) { slideIndex = 1 }
+            x[slideIndex - 1].style.display = "block";
+            setTimeout(carousel, 5000); // Change image every 5 seconds
+        }
+    </script>
+}

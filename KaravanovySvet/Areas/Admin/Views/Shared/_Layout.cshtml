@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Karavanový Svět</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    <header class="w3-bar w3-light-green">
+        <h1 class="w3-bar-item">
+            <a asp-area="" asp-page="/Index" style="text-decoration:none;color:black">
+                <img src="~/img/logo.png" alt="Karavan logo" style="max-height: 1em"/>
+                Karavanový svět
+            </a>
+        </h1>
+        <nav class="w3-mobile" style="margin-top:2em">
+            <a asp-area="" asp-page="/Index" class="w3-bar-item w3-button w3-mobile w3-hover-pale-green">Úvodní stránka</a>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="w3-container w3-light-green w3-padding-large">
+            &copy; 2024 - KaravanovySvet - <a asp-area="" asp-page="/Privacy" style="color:black;text-decoration:none">Privacy</a>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
