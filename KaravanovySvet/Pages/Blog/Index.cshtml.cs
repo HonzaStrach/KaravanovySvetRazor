@@ -18,7 +18,7 @@ namespace KaravanovySvet.Pages.Blog
         public IEnumerable<string> TagCloud { get; set; }
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
-        private const int PageSize = 1;
+        private const int PageSize = 10;
         public IndexModel(KaravanovySvet.Data.KaravanovySvetContext context)
         {
             _context = context;

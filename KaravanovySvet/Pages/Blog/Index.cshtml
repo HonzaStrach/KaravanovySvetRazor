@@ -14,9 +14,9 @@
                 <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%" />
                 <span class="w3-pink w3-padding">@item.Blog.PublishDate.ToLongDateString()</span>
                 <div class="w3-padding">
-                    <h2 class="w3-hover-text-pink"><a asp-area="" asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                    <h2 class="w3-hover-text-pink"><a asp-page="/Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
                     <p>@Html.Raw(item.Blog.Perex)</p>
-                    <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
+                    <a asp-page="/Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
                 </div>
             </div>
         }
@@ -50,7 +50,7 @@
             <div>
                 @foreach (var post in Model.MostReadPosts)
                 {
-                    <h4><a asp-page="/Blog/Index" asp-route-id="@post.Blog.Id">@post.Blog.Title</a></h4>
+                    <h4><a asp-page="/Blog/Details" asp-route-title="@post.Blog.Title.ToUrlFriendly()" asp-route-id="@post.Blog.Id">@post.Blog.Title</a></h4>
                     <span class="w3-small">@post.Blog.PublishDate.ToLongDateString()</span>
                 }
             </div>

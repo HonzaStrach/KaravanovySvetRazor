@@ -11,9 +11,9 @@
         <div class="w3-display-container blogSlides">
             <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%">
             <div class="w3-padding w3-display-bottomleft" style="margin-bottom:3em">
-                <h2 style="color:white;font-size:3.5em;font-weight:bold"><a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                    <h2 style="color:white;font-size:3.5em;font-weight:bold"><a asp-area="" asp-page="./Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
                 <h3 style="color:white;font-weight:bold">@item.Blog.Teaser</h3>
-                <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Zobrazit příspěvek</a>
+                    <a asp-area="" asp-page="./Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Zobrazit příspěvek</a>
             </div>
         </div>
     }
@@ -29,9 +29,9 @@
                     <img src="@item.BlogImage.ImagePath" alt="@item.BlogImage.AltText" style="width:100%" />
                     <span class="w3-pink w3-padding">@item.Blog.PublishDate.ToLongDateString()</span>
                     <div class="w3-padding">
-                        <h2 class="w3-hover-text-pink"><a asp-area="" asp-page="./Blog/Details" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
+                        <h2 class="w3-hover-text-pink"><a asp-area="" asp-page="./Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id">@item.Blog.Title</a></h2>
                         <p>@Html.Raw(item.Blog.Perex)</p>
-                        <a asp-page="./Blog/Details" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
+                        <a asp-page="./Blog/Details" asp-route-title="@item.Blog.Title.ToUrlFriendly()" asp-route-id="@item.Blog.Id" class="w3-button w3-large w3-padding-large w3-yellow w3-hover-pink">Pokračovat v čtení</a>
                     </div>
                 </div>
             }

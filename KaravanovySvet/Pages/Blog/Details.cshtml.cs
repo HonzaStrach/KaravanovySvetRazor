@@ -20,8 +20,10 @@ namespace KaravanovySvet.Pages.Blog
         }
 
         public BlogViewModel BlogPost { get; set; } = default!;
-
         public IList<Blogs> MostReadBlogPosts { get; set; }
+        public IEnumerable<string> TagCloud { get; set; }
+        public Blogs PreviousBlogPost { get; set;} = default!;
+        public Blogs NextBlogPost { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -63,6 +65,18 @@ namespace KaravanovySvet.Pages.Blog
                 Blog = blogPost,
                 BlogImage = blogPost.Images.FirstOrDefault() // Assumes you want the first image
             };
+
+            var allPosts = await _context.Blog
+                .OrderBy(b => b.PublishDate) // or another ordering logic that suits your application
+                .ToListAsync();
+
+            int currentIndex = allPosts.FindIndex(b => b.Id == id);
+            PreviousBlogPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+            NextBlogPost = currentIndex + 1 < allPosts.Count ? allPosts[currentIndex + 1] : null;
+
+            var labels = MostReadBlogPosts.SelectMany(b => b.LabelArray).Distinct();
+
+            TagCloud = labels;
 
             return Page();
         }
