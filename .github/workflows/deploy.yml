@@ -1,0 +1,77 @@
+name: Deploy to Web Server via FTP
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4.0.0
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build and Publish Web Application
+      run: |
+        dotnet publish KaravanovySvet/KaravanovySvet.csproj -c Release -o published
+
+    - name: Install jq
+      run: |
+        sudo apt-get update
+        sudo apt-get install jq
+
+    - name: Update Connection String in appsettings.json
+      run: |
+        jq '.ConnectionStrings.KaravanovySvetContext = "${{ secrets.SQL_CONNECTION_STRING }}"' KaravanovySvet/published/appsettings.json > temp.json && mv temp.json KaravanovySvet/published/appsettings.json
+
+    - name: Upload app_offline.htm to Take Application Offline
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./
+        server-dir: /wwwroot/
+        dry-run: false
+        dangerous-clean-slate: false
+        files: |
+          app_offline.htm
+
+    - name: Clean Existing Files on FTP Server
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./published
+        server-dir: /wwwroot/
+        dry-run: false
+        dangerous-clean-slate: true
+
+    - name: Deploy Application via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./published/
+        server-dir: /wwwroot/
+        dry-run: false
+
+    - name: Remove app_offline.htm to Bring Application Online
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./
+        server-dir: /wwwroot/
+        dry-run: false
+        files: |
+          !app_offline.htm
