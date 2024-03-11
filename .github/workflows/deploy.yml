@@ -33,9 +33,9 @@ jobs:
     - name: Upload app_offline.htm to Take Application Offline
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        ftp-server: ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
         server-dir: /wwwroot/
         dry-run: false
@@ -46,9 +46,9 @@ jobs:
     - name: Clean Existing Files on FTP Server
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        ftp-server: ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./published
         server-dir: /wwwroot/
         dry-run: false
@@ -57,9 +57,9 @@ jobs:
     - name: Deploy Application via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        ftp-server: ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./published/
         server-dir: /wwwroot/
         dry-run: false
@@ -67,9 +67,9 @@ jobs:
     - name: Remove app_offline.htm to Bring Application Online
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        ftp-server: ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
         server-dir: /wwwroot/
         dry-run: false
