@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KaravanovySvet.Data;
 using KaravanovySvet.Models;
 using Microsoft.AspNetCore.Authorization;
+using JenikuvWeb.CloudStorage;
 
 namespace KaravanovySvet.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace KaravanovySvet.Areas.Admin.Controllers
     public class BlogsController : Controller
     {
         private readonly KaravanovySvetContext _context;
+        private readonly ICloudStorage _cloudStorage;
 
-        public BlogsController(KaravanovySvetContext context)
+        public BlogsController(KaravanovySvetContext context, ICloudStorage cloudStorage)
         {
             _context = context;
+            _cloudStorage = cloudStorage;
         }
 
         // GET: Admin/Blogs
@@ -57,15 +60,37 @@ namespace KaravanovySvet.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Perex,MainText,Labels,PublishDate,PermaLink,Location,Keywords,Comments,TotalViews")] Blogs blogs)
+        public async Task<IActionResult> Create(BlogViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(blogs);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (model.BlogImage.ImageFile != null)
+                {
+                    // Process the image file
+                    string fileNameForStorage = FormFileName(model.BlogImage.AltText, model.BlogImage.ImageFile.FileName);
+                    model.BlogImage.ImagePath = await _cloudStorage.UploadFileAsync(model.BlogImage.ImageFile, fileNameForStorage);
+                    model.BlogImage.ImageStorageName = fileNameForStorage;
+
+                    // You will need to add the Blog entity to the context first
+                    _context.Add(model.Blog);
+                    await _context.SaveChangesAsync(); // Save the Blog to generate its Id
+
+                    // Now set the BlogId for the BlogImage and save it
+                    model.BlogImage.BlogId = model.Blog.Id;
+                    _context.Add(model.BlogImage);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Handle the case where no image is uploaded
+                    _context.Add(model.Blog);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            return View(blogs);
+            return View(model);
         }
 
         // GET: Admin/Blogs/Edit/5
@@ -155,6 +180,13 @@ namespace KaravanovySvet.Areas.Admin.Controllers
         private bool BlogsExists(int id)
         {
             return _context.Blog.Any(e => e.Id == id);
+        }
+
+        private static string FormFileName(string title, string fileName)
+        {
+            var fileExtension = Path.GetExtension(fileName);
+            var fileNameForStorage = $"{title}-{DateTime.Now.ToString("yyyyMMddHHmmss")}{fileExtension}";
+            return fileNameForStorage;
         }
     }
 }

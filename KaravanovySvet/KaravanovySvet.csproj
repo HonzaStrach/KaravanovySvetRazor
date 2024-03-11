@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.2" />
@@ -22,6 +23,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +33,7 @@
     <Folder Include="Areas\Identity\Models\" />
     <Folder Include="Areas\Identity\Pages\Shared\" />
     <Folder Include="Areas\Identity\Views\" />
+    <Folder Include="CloudStorage\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\NováSložka\" />
   </ItemGroup>

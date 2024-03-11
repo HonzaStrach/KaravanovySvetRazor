@@ -17,5 +17,13 @@ namespace KaravanovySvet.Data
 
         public DbSet<KaravanovySvet.Models.Blogs> Blog { get; set; } = default!;
         public DbSet<KaravanovySvet.Models.BlogImage> BlogImage { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Set the default schema
+            modelBuilder.HasDefaultSchema("dbo");
+        }
     }
 }

@@ -4,6 +4,8 @@ using KaravanovySvet.Data;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Identity;
 using Azure.Identity;
+using JenikuvWeb.CloudStorage;
+using Serilog;
 namespace KaravanovySvet
 {
     public class Program
@@ -16,15 +18,22 @@ namespace KaravanovySvet
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<KaravanovySvetContext>();
 
-            // Configure BlobServiceClient
-            builder.Services.AddSingleton<BlobServiceClient>(x =>
-                new BlobServiceClient(
-                new Uri("https://jenikuvweb.blob.core.windows.net"),
-                new DefaultAzureCredential()));
+            builder.Services.AddSingleton<ICloudStorage, GoogleCloudStorage>();
+
+            builder.Services.AddMemoryCache();
 
             // Add services to the container.
             builder.Services.AddMvc();
             builder.Services.AddRazorPages();
+
+            // Configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            builder.Host.UseSerilog(); // Use Serilog for logging
 
             var app = builder.Build();
 

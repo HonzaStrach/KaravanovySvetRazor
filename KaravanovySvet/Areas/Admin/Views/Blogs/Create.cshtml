@@ -1,4 +1,4 @@
-﻿@model KaravanovySvet.Models.Blogs
+﻿@model KaravanovySvet.Models.BlogViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -10,62 +10,72 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Blog.Title" class="control-label"></label>
+                <input asp-for="Blog.Title" class="form-control" />
+                <span asp-validation-for="Blog.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Teaser" class="control-label"></label>
-                <input asp-for="Teaser" class="form-control" />
-                <span asp-validation-for="Teaser" class="text-danger"></span>
+                <label asp-for="Blog.Teaser" class="control-label"></label>
+                <input asp-for="Blog.Teaser" class="form-control" />
+                <span asp-validation-for="Blog.Teaser" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Perex" class="control-label"></label>
-                <textarea asp-for="Perex" id="#editor" class="form-control"></textarea>
-                <span asp-validation-for="Perex" class="text-danger"></span>
+                <label asp-for="BlogImage.ImageFile" class="control-label"></label>
+                <input asp-for="BlogImage.ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="BlogImage.ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MainText" class="control-label"></label>
-                <textarea asp-for="MainText" id="#editor" class="form-control"></textarea>
-                <span asp-validation-for="MainText" class="text-danger"></span>
+                <label asp-for="BlogImage.AltText" class="control-label"></label>
+                <input asp-for="BlogImage.AltText" class="form-control" />
+                <span asp-validation-for="BlogImage.AltText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Labels" class="control-label"></label>
-                <input asp-for="Labels" class="form-control" />
-                <span asp-validation-for="Labels" class="text-danger"></span>
+                <label asp-for="Blog.Perex" class="control-label"></label>
+                <textarea asp-for="Blog.Perex" id="#editor" class="form-control"></textarea>
+                <span asp-validation-for="Blog.Perex" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PublishDate" class="control-label"></label>
-                <input asp-for="PublishDate" class="form-control" />
-                <span asp-validation-for="PublishDate" class="text-danger"></span>
+                <label asp-for="Blog.MainText" class="control-label"></label>
+                <textarea asp-for="Blog.MainText" id="#editor" class="form-control"></textarea>
+                <span asp-validation-for="Blog.MainText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PermaLink" class="control-label"></label>
-                <input asp-for="PermaLink" class="form-control" />
-                <span asp-validation-for="PermaLink" class="text-danger"></span>
+                <label asp-for="Blog.Labels" class="control-label"></label>
+                <input asp-for="Blog.Labels" class="form-control" />
+                <span asp-validation-for="Blog.Labels" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <label asp-for="Blog.PublishDate" class="control-label"></label>
+                <input asp-for="Blog.PublishDate" class="form-control" />
+                <span asp-validation-for="Blog.PublishDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Keywords" class="control-label"></label>
-                <input asp-for="Keywords" class="form-control" />
-                <span asp-validation-for="Keywords" class="text-danger"></span>
+                <label asp-for="Blog.PermaLink" class="control-label"></label>
+                <input asp-for="Blog.PermaLink" class="form-control" />
+                <span asp-validation-for="Blog.PermaLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Blog.Location" class="control-label"></label>
+                <input asp-for="Blog.Location" class="form-control" />
+                <span asp-validation-for="Blog.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Blog.Keywords" class="control-label"></label>
+                <input asp-for="Blog.Keywords" class="form-control" />
+                <span asp-validation-for="Blog.Keywords" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Comments" /> @Html.DisplayNameFor(model => model.Comments)
+                    <input class="form-check-input" asp-for="Blog.Comments" /> @Html.DisplayNameFor(model => model.Blog.Comments)
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="TotalViews" class="control-label"></label>
-                <input asp-for="TotalViews" class="form-control" />
-                <span asp-validation-for="TotalViews" class="text-danger"></span>
+                <label asp-for="Blog.TotalViews" class="control-label"></label>
+                <input asp-for="Blog.TotalViews" class="form-control" />
+                <span asp-validation-for="Blog.TotalViews" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

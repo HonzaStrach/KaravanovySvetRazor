@@ -7,21 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using KaravanovySvet.Data;
 using KaravanovySvet.Models;
+using JenikuvWeb.CloudStorage;
 
 namespace KaravanovySvet.Pages.Blog
 {
     public class IndexModel : PageModel
     {
         private readonly KaravanovySvet.Data.KaravanovySvetContext _context;
+        private readonly ICloudStorage _cloudStorage;
         public IList<BlogViewModel> BlogPosts { get; set; }
         public IList<BlogViewModel> MostReadPosts { get; set; }
         public IEnumerable<string> TagCloud { get; set; }
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
         private const int PageSize = 10;
-        public IndexModel(KaravanovySvet.Data.KaravanovySvetContext context)
+        public IndexModel(KaravanovySvet.Data.KaravanovySvetContext context, ICloudStorage cloudStorage)
         {
             _context = context;
+            _cloudStorage = cloudStorage;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -49,24 +52,37 @@ namespace KaravanovySvet.Pages.Blog
             var totalPosts = await blogPostsQuery.CountAsync();
             TotalPages = (int)Math.Ceiling(totalPosts / (double)PageSize);
 
-            BlogPosts = await blogPostsQuery
+            var blogPosts = await blogPostsQuery
                 .OrderByDescending(b => b.PublishDate)
                 .Skip((CurrentPage - 1) * PageSize)
                 .Take(PageSize)
-                .Select(b => new BlogViewModel
-                {
-                    Blog = b,
-                    BlogImage = b.Images.FirstOrDefault()
-                })
+                .Include(blog => blog.Images)
                 .ToListAsync();
+
+            BlogPosts = new List<BlogViewModel>();
+
+            foreach (var post in blogPosts)
+            {
+                var blogViewModel = new BlogViewModel
+                {
+                    Blog = post,
+                    BlogImage = post.Images.FirstOrDefault()
+                };
+                if (blogViewModel.BlogImage != null)
+                {
+                    // Generate Signed URL for each image
+                    string objectName = blogViewModel.BlogImage.ImageStorageName;
+                    blogViewModel.BlogImage.ImagePath = _cloudStorage.GenerateSignedUrl(blogViewModel.BlogImage.ImageStorageName);
+                }
+                BlogPosts.Add(blogViewModel);
+            }
 
             MostReadPosts = await _context.Blog
                 .OrderByDescending(b => b.TotalViews)
                 .Take(3)
                 .Select(b => new BlogViewModel
                 {
-                    Blog = b,
-                    BlogImage = b.Images.FirstOrDefault()
+                    Blog = b
                 })
                 .ToListAsync();
 

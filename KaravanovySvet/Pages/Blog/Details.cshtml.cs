@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using KaravanovySvet.Data;
 using KaravanovySvet.Models;
+using JenikuvWeb.CloudStorage;
 
 namespace KaravanovySvet.Pages.Blog
 {
     public class DetailsModel : PageModel
     {
         private readonly KaravanovySvet.Data.KaravanovySvetContext _context;
+        private readonly ICloudStorage _cloudStorage;
 
-        public DetailsModel(KaravanovySvet.Data.KaravanovySvetContext context)
+        public DetailsModel(KaravanovySvet.Data.KaravanovySvetContext context, ICloudStorage cloudStorage)
         {
             _context = context;
+            _cloudStorage = cloudStorage;
         }
 
         public BlogViewModel BlogPost { get; set; } = default!;
@@ -65,6 +68,8 @@ namespace KaravanovySvet.Pages.Blog
                 Blog = blogPost,
                 BlogImage = blogPost.Images.FirstOrDefault() // Assumes you want the first image
             };
+
+            BlogPost.BlogImage.ImagePath = _cloudStorage.GenerateSignedUrl(BlogPost.BlogImage.ImageStorageName);
 
             var allPosts = await _context.Blog
                 .OrderBy(b => b.PublishDate) // or another ordering logic that suits your application
