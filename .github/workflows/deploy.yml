@@ -28,7 +28,7 @@ jobs:
 
     - name: Update Connection String in appsettings.json
       run: |
-        jq '.ConnectionStrings.KaravanovySvetContext = "${{ secrets.SQL_CONNECTION_STRING }}"' KaravanovySvet/published/appsettings.json > temp.json && mv temp.json KaravanovySvet/published/appsettings.json
+        jq '.ConnectionStrings.KaravanovySvetContext = "${{ secrets.SQL_CONNECTION_STRING }}"' published/appsettings.json > temp.json && mv temp.json published/appsettings.json
 
     - name: Upload app_offline.htm to Take Application Offline
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
