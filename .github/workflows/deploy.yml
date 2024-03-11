@@ -49,7 +49,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./published
+        local-dir: ./
         server-dir: /wwwroot/
         dry-run: false
         dangerous-clean-slate: true
@@ -60,7 +60,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./published/
+        local-dir: ./
         server-dir: /wwwroot/
         dry-run: false
 
