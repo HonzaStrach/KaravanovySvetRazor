@@ -5,22 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Karavanový Svět</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script src="https://kit.fontawesome.com/3aeded1a52.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Head", required: false)
+    <style>
+        html, body, h1, h2, h3, h4, h5 {
+            font-family: "Raleway", sans-serif
+        }
+    </style>
 </head>
-<body>
-    <header class="w3-bar w3-light-green">
-        <h1 class="w3-bar-item">
-            <a asp-area="" asp-page="/Index" style="text-decoration:none;color:black">
-                <img src="~/img/logo.png" alt="Karavan logo" style="max-height: 1em"/>
-                Karavanový svět
-            </a>
-        </h1>
-        <nav class="w3-mobile" style="margin-top:2em">
-            <a asp-area="" asp-page="/Index" class="w3-bar-item w3-button w3-mobile w3-hover-pale-green">Úvodní stránka</a>
-        </nav>
-    </header>
-
-    <main>
+<body class="w3-light-grey">
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();">
+            <i class="fa fa-bars"></i> Menu
+        </button>
+        <span class="w3-bar-item w3-right">Karavanový svět</span>
+    </div>
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar">
+        <br>
+        <div class="w3-container w3-row">
+            <div class="w3-col s4">
+                <img src="~/img/avatar.webp" class="w3-circle w3-margin-right" style="width:46px">
+            </div>
+            <div class="w3-col s8 w3-bar">
+                <span>Ahoj <strong>Jeníku</strong></span><br>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+                <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+            </div>
+        </div>
+        <hr />
+        <div class="w3-container">
+            <h5>Přehled</h5>
+        </div>
+        <div class="w3-bar-block">
+        </div>
+    </nav>
+    <main style="margin-left:300px;margin-top:43px;">
         @RenderBody()
     </main>
 
@@ -29,6 +52,19 @@
     </footer>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+                // Toggle between showing and hiding the sidebar, and add overlay effect
+                function w3_open() {
+                    if (mySidebar.style.display === 'block') {
+                        mySidebar.style.display = 'none';
+                        overlayBg.style.display = "none";
+                    } else {
+                        mySidebar.style.display = 'block';
+                        overlayBg.style.display = "block";
+                    }
+                }
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
