@@ -41,13 +41,29 @@
             <h5>Přehled</h5>
         </div>
         <div class="w3-bar-block">
+            <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu">
+                <i class="fa fa-remove fa-fw"></i>  Close Menu
+            </a>
+            <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Přehled</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Zobrazení</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  Návštěvnost</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Geo</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  News</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  History</a>
+            <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Nastavení</a>
         </div>
     </nav>
-    <main style="margin-left:300px;margin-top:43px;">
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="zavřít postranní menu" id="myOverlay"></div>
+
+    <main class="w3-main" style="margin-left:300px;margin-top:43px;">
         @RenderBody()
     </main>
 
-    <footer class="w3-container w3-light-green w3-padding-large">
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-16 w3-light-grey">
             &copy; 2024 - KaravanovySvet - <a asp-area="" asp-page="/Privacy" style="color:black;text-decoration:none">Privacy</a>
     </footer>
 
