@@ -32,7 +32,7 @@ jobs:
 
     - name: Update Google Credential File Name in appsettings.json
       run: |
-        jq '.GoogleCredentialFile = "${{ secrets.GOOGLE_CREDENTIAL_FILENAME }}"' published/appsettings.json > temp2.json && mv temp2.json published/appsettings.json
+        jq '.GoogleCredentialFile = "${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}"' published/appsettings.json > temp2.json && mv temp2.json published/appsettings.json
 
 
     - name: Upload app_offline.htm to Take Application Offline
